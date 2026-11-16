@@ -2065,7 +2065,7 @@ Total: ${je(K)}.\n\n¿Me confirman disponibilidad y más detalles?`)},[j,K]),Of=
     function doPost(){ fetch(SHARED_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){ if(!r.ok) throw new Error('post'); return r.json(); }).then(function(j){ if(j&&j._id) setCrudId(j._id); updateSharedStatus(true); }).catch(function(){ updateSharedStatus(false); }); }
     function doPut(cid){ fetch(SHARED_URL+'/'+cid,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){ if(r.ok){ updateSharedStatus(true); } else { try{ localStorage.removeItem(CRUD_ID_KEY); }catch(e){} doPost(); } }).catch(function(){ updateSharedStatus(false); }); }
     try{ var id=getCrudId(); if(id){ doPut(id); } else { fetch(SHARED_URL).then(function(r){ return r.json(); }).then(function(arr){ if(Array.isArray(arr)&&arr.length&&arr[0]._id){ setCrudId(arr[0]._id); doPut(arr[0]._id); } else { doPost(); } }).catch(doPost); } }catch(e){ updateSharedStatus(false); } }
-  function updateSharedStatus  function updateSharedStatus(ok){ var el=document.getElementById('cavi20-sharedStatus'); if(!el) return; if(ok){ el.textContent='● Base compartida: conectada - todos ven lo mismo'; el.style.color='#2E7D32'; } else { el.textContent='● Sin conexión a base compartida - se guardó solo en este celu'; el.style.color='#8E2B2A'; } }
+  function updateSharedStatus(ok){ var el=document.getElementById('cavi20-sharedStatus'); if(!el) return; if(ok){ el.textContent='● Base compartida: conectada - todos ven lo mismo'; el.style.color='#2E7D32'; } else { el.textContent='● Sin conexión a base compartida - se guardó solo en este celu'; el.style.color='#8E2B2A'; } }
   function syncFromShared(){
     if(sessionStorage.getItem('cavi20_synced_once')) return;
     sessionStorage.setItem('cavi20_synced_once','1');
@@ -2090,7 +2090,7 @@ Total: ${je(K)}.\n\n¿Me confirman disponibilidad y más detalles?`)},[j,K]),Of=
       }).catch(function(){ updateSharedStatus(false); });
     }catch(e){}
   }
-  if(document.readyStateif(document.readyState==='complete'){ setTimeout(syncFromShared, 800); } else { window.addEventListener('load', function(){ setTimeout(syncFromShared, 800); }); }
+  if(document.readyState==='complete'){ setTimeout(syncFromShared, 800); } else { window.addEventListener('load', function(){ setTimeout(syncFromShared, 800); }); }
   var editingId=null; var currentImageData=''; var searchText='';
   function fmt(n){ return 'Gs '+Number(n).toLocaleString('es-PY'); }
   function filtered(){ var list=load(); if(!searchText) return list; var q=searchText.toLowerCase(); return list.filter(function(p){ return (p.name+' '+esc(p.cat)+' '+p.desc).toLowerCase().indexOf(q)>-1; }); }
